@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{{ static_url("css/bootstrap.min.css") }}">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script>
+      function showId()
+      {
+        var s = document.getElementById('field').value;
+        alert(s)
+      }
+      </script>
+    <script>
+      function sendMsg()
+      {
+        var s = document.getElementById('field').value;
+        $.post('')
+      }
+    </script>
+  </head>
+  <body>
+
+    <div class="page-header">
+        <h1>Buttons</h1>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="input-group">
+          <input type="text" id='field' class="form-control" placeholder="Search for...">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" onclick="showId()">Go!</button>
+          </span>
+        </div><!-- /input-group -->
+      </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+
+    <button type="button" class="btn btn-lg btn-primary">Primary</button>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Panel heading without title</div>
+      <div class="panel-body">
+       </div>
+         <pre id="data" class="showitem">{{data|e}}</pre>
+      </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{ static_url("js/jquery.min.js") }}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ static_url("js/bootstrap.min.js") }}"></script>
+  </body>
+</html>
