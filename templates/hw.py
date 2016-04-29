@@ -58,13 +58,25 @@ class searchItemHandler(tornado.web.RequestHandler):
         return self.application.db_pool[subject]
 
     def get(self):
-        db_names = self.application.db_names
-
-        self.render('search.html')
+        t_db_names = self.application.db_names
+        db_names = []
+        for r in t_db_names:
+            db_names.append(('btn_db_' + r, r))
+        self.render('search.html',
+                    db_names=db_names)
 
     def post(self):
+
         action = self.get_argument('action')
         if action == 'search':
+
+
+            self.write({'ok': False, 'data': 'error'})
+
+
+
+
+            return
             ok = True
             try:
                 id = self.get_argument('data')
@@ -76,7 +88,11 @@ class searchItemHandler(tornado.web.RequestHandler):
                 ok = False
                 item = e.message
             self.write({'ok': ok, 'data': item})
-
+        elif action == 'select_db':
+            db_name = self.get_argument('data')
+            db = self.get_db(db_name)
+            col_names = db.collection_names()
+            self.write(json.dumps(col_names))
         else:
             pass
 

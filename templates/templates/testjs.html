@@ -1,21 +1,22 @@
-<script type="text/javascript">
-function sayHi()
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function copyText()
 {
-alert("Hello!");
+    alert('123123')
+document.getElementById("field2").value=document.getElementById("field1").value;
 }
 </script>
-     包含在<script>元素内部的JavaScript代码将被从上至下依次解释，在解释器<script>元素内部所有代码求值完毕以前，页面中的其余内容都不会被浏览器加载或显示
-     在使用<script>嵌入JavaScript代码时，记住不在要代码中任何地方出现”</script>”字符串，例如，浏览器在加载下面所示代码时就会产生一个错误
-<script type="text/javascript">
-function sayScript()
-{
-alert("</script>");
-}
-</script>
-      因为浏览器遇到字符串"</script>"时，会认为那是结束的</script>标签，而通过把字符串分割为2部分可以解决这个问题，如：
-<script type="text/javascript">
-function sayScript()
-{
-alert("</scr"+"ipt>");
-}
-</script>
+</head>
+<body>
+
+Field1: <input type="text" id="field1" value="Hello World!"><br>
+Field2: <input type="text" id="field2"><br><br>
+
+<button onclick="copyText()">复制文本</button>
+
+<p>当按钮被单击时触发函数。此函数把文本从 Field1 复制到 Field2 中。</p>
+
+</body>
+</html>
