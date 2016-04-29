@@ -10,15 +10,59 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ static_url("css/bootstrap.min.css") }}">
-    <script src="{{ static_url("js/jquery.min.js") }}">
-      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <script src="{{ static_url("js/jquery.min.js") }}"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+
     <script>
-      function showId(s)
+      function showStr(s)
+      {
+        alert(s);
+      }
+      function addColBtn(s)
+      {
+        var c_list = JSON.parse(s);
+        alert(c_list);
+        var btns = ''
+        for (var i in c_list)
+        {
+          var c_name = c_list[i];
+          //alert(c_list[i])
+          //<button type="button" class="btn btn-default" id = {{i}} onclick = "getSubject(this.id)">{{i}}</button>
+          var str = "<button type=\"button\" class=\"btn btn-default\" id = ";
+          str += 'btn_col_' + c_name + " style=\"width: 170px; height: 40px\">";
+          str += c_name + "<\/button>";
+          btns += str + '\n';
+        }
+        //alert(btns)
+        //$("#col_btn_group").html('');
+        //btns = "<cbg>" + btns;
+        //btns += "</cbg>";
+        $("#col_btn_group").html(btns)
+
+      }
+      function getSubject(s)
+      {
+        $.ajax({
+          type: 'POST',
+          data: {
+            'url' : '127.0.0.1:8004/search',
+            'action' : 'select_db',
+            'data' : s
+          },
+          success : function(data){
+              addColBtn(data)
+
+          }
+        });
+      }
+      function showResult(s)
       {
         if (s['ok'])
         {
@@ -30,30 +74,28 @@
         }
         else
         {
-          alert(s['data'])
+            alert(s['data'])
         }
 
       }
       function sendMsg()
       {
-        var s = document.getElementById('field').value;
-        var dbn = document.getElementById('da-name-value').value;
-        var coln = document.getElementById('collection').value;
+        var s = document.getElementById('value-input-1').value;
           $.ajax({
               type: 'POST',
               data: {
-                  'action' : 'print',
-                  'db_name' : dbn,
-                  'col_name' : coln,
+                  'url' : '127.0.0.1:8004/search',
+                  'action' : 'search',
                   'data' : s
               },
               success : function(data){
-                  showId(data)
+                  showResult(data)
               }
           }
       );
       }
     </script>
+
   </head>
   <body>
 
@@ -63,21 +105,17 @@
 
 
     <div class="bs-example" data-example-id="vertical-button-group">
-      <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-        <button type="button" class="btn btn-default">Button</button>
-        <button type="button" class="btn btn-default">Button</button>
-        <button type="button" class="btn btn-default">Button</button>
-        <button type="button" class="btn btn-default">Button</button>
+      <div class="btn-group-vertical" role="group" aria-label="Vertical button group" id = 'db_btn_group'>
+        {%for i in db_names %}
+          <button type="button" class="btn btn-default" id = {{i[0]}} value = {{i[1]}} style="width: 170px; height: 40px"
+                  onclick = "getSubject(this.value)">{{i[1]}}</button>
+        {%endfor%}
     </div>
 
-      <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-        <button type="button" class="btn btn-default">Button</button>
-        <button type="button" class="btn btn-default">Button</button>
-        <button type="button" class="btn btn-default">Button</button>
-        <button type="button" class="btn btn-default">Button</button>
-        <button type="button" class="btn btn-default">Button</button>
-        <button type="button" class="btn btn-default">Button</button>
-        <button type="button" class="btn btn-default">Button</button>
+      <div class="btn-group-vertical" role="group" aria-label="Vertical button group" id = 'col_btn_group'>
+
+
+
     </div>
 
   </div>
@@ -93,7 +131,7 @@
           <span class="input-group-addon" id="key-1">key</span>
           <input type="text" id='key-input-1' class="form-control" placeholder="Search for...">
           <span class="input-group-addon" id="value-1">value</span>
-          <input type="text" id='value-input-' class="form-control" placeholder="Search for...">
+          <input type="text" id='value-input-1' class="form-control" placeholder="Search for...">
           <span class="input-group-btn">
             <button class="btn btn-default" type="button" onclick="sendMsg()">Go!</button>
           </span>
