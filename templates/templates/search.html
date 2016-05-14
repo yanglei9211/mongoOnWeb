@@ -119,7 +119,7 @@
   <body>
 
     <div class="page-header">
-        <h1>Mongo Quary</h1>
+        <h1>Mongo Query</h1>
     </div>
 
     <div id="now_status">
@@ -129,31 +129,44 @@
         </h2>
         </h2>
     </div>
-
-    <div>
-      <h3></h3>
+<!--
+    <div class="btn-group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Action <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        {% for sel_db_name in tol_db_names %}
+          <li><a href="{{sel_db_name}}"　id="{{sel_db_name}}">{{sel_db_name}}</a></li>
+        {% endfor %}
+      </ul>
     </div>
-    <div class="bs-example" data-example-id="vertical-button-group">
-      <div class="btn-group-vertical" role="group" aria-label="Vertical button group" id = 'db_btn_group'>
-        {%for i in db_names %}
-          <button type="button" class="btn btn-default" id = {{i[0]}} value = {{i[1]}} style="width: 170px; height: 40px"
-                  onclick = "setSubject(this.value)">{{i[1]}}</button>
-        {%endfor%}
-    </div>
+-->
 
-      <div class="btn-group-vertical" role="group" aria-label="Vertical button group" id = 'col_btn_group'>
+    <div class="bs-example" data-example-id="single-button-dropdown">
 
-
-
-    </div>
-
+    <div class="btn-group">
+      <button type="button" class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">dbname <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        {% for sel_db_name in tol_db_names %}
+          <li><a href="/search/{{sel_db_name}}/">{{sel_db_name}}</a></li>
+        {% endfor %}
+      </ul>
+    </div><!-- /btn-group -->
+    <div class="btn-group">
+      <button type="button" class="btn btn-lg btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">colname <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        {% for sel_col_name in tol_col_names %}
+          <li><a href="/search/{{db_name}}/{{sel_col_name}}">{{sel_col_name}}</a></li>
+        {% endfor %}
+      </ul>
+    </div><!-- /btn-group -->
+    <button type="button" class="btn btn-lg btn-info">add</button>
+    <button type="button" class="btn btn-lg btn-danger">Go!</button>
   </div>
-
 
     <div>
       <h4></h4>
-      </div>
-
+    </div>
     <div class="row">
       <div class="col-lg-6">
         <div class="input-group">

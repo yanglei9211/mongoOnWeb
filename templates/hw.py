@@ -24,7 +24,6 @@ class LoginHandler(tornado.web.RequestHandler):
     def get(self):
         self.render('test.html', data=[1, 2, 3, 4, 5, '1', 'a', 'c'])
 
-
 class searchItemHandler(tornado.web.RequestHandler):
     def sorted(self, data):
         if isinstance(data, dict):
@@ -52,31 +51,40 @@ class searchItemHandler(tornado.web.RequestHandler):
         return dumps(obj, ensure_ascii=False, indent=4, sort_keys=True)
 
     def get_item(self, item_id):
-        return self.application.db.item.find_one({'_id':ObjectId(item_id)})
+        return None if item_id == '' else self.application.db.item.find_one({'_id':ObjectId(item_id)})
 
-    def get_db(self,subject):
-        return self.application.db_pool[subject]
+    def get_db(self, subject):
+        return None if subject == '' else self.application.db_pool[subject]
 
-    def get(self):
+    def get(self, db_name, col_name):
+        """
         t_db_names = self.application.db_names
         db_names = []
         for r in t_db_names:
             db_names.append(('btn_db_' + r, r))
         self.render('search.html',
                     db_names=db_names)
+                    :param col_name:
+                    :param db_name:
+        """
+        print 'db_name', db_name
+        print 'col_name', col_name
+        tol_db_names = self.application.db_names
+        tol_col_names = []
+        print tol_db_names
+        db = self.get_db(db_name)
+        if db is not None:
+            tol_col_names = db.collection_names()
+
+        self.render('search.html',
+                    tol_db_names=tol_db_names,
+                    tol_col_names=tol_col_names,
+                    db_name=db_name,
+                    col_name=col_name)
 
     def post(self):
-
         action = self.get_argument('action')
         if action == 'search':
-
-
-            self.write({'ok': False, 'data': 'error'})
-
-
-
-
-            return
             ok = True
             try:
                 id = self.get_argument('data')
@@ -150,7 +158,7 @@ if __name__ == "__main__":
         db_pool[s] = client[s]
     app = tornado.web.Application({(r"/login", LoginHandler),
                                    (r"/item/?(\w*)", showItemHandler),
-                                   (r"/search", searchItemHandler)
+                                   (r"/search/?(\w*)/?(\w*)", searchItemHandler)
                                    },
                                   template_loader=JinjaLoader(loader=loader, auto_escape=True),
                                   static_path=os.path.join(os.path.dirname(__file__), "static"),
